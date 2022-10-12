@@ -611,7 +611,7 @@ class SystemUser(AbstractUser):
 class Post(models.Model):
     body = models.TextField()
     image = models.ImageField(upload_to='upload_photos', blank=True, null=True)
-    created_on = models.DateTimeField(default=timezone.now)
+    created_on = models.DateTimeField(auto_now_add=True, null=True)
     author = models.ForeignKey(
         User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
