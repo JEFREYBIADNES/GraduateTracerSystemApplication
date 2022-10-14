@@ -41,7 +41,7 @@
 
 
 </head>
-<body id="page-top">
+<body id="page-top" onload="side_bar_active()">
 	<!-- Page Wrapper -->
 	<div id="wrapper">
     {% include 'tracer/admin/sidebar.html' %}
@@ -118,6 +118,50 @@
    	  	// Animate loader off screen
   	  	$(".se-pre-con").fadeOut("slow");;
   	  });
+  </script>
+
+  <script>
+    function side_bar_active(){
+      current_url = window.location.href;
+      dashboard = document.getElementById("{% url 'DashboardAdmin' %}");
+      advertise = document.getElementById("{% url 'advertise' %}");
+      browser = document.getElementById("{% url 'browser' %}");
+      pendingaccounts = document.getElementById("{% url 'pendingaccounts' %}");
+      approvedaccounts = document.getElementById("{% url 'approvedaccounts' %}");
+      add_announcements = document.getElementById("{% url 'add_announcements' %}");
+      display_announcements = document.getElementById("{% url 'display_announcements' %}");
+      users = document.getElementById("{% url 'users' %}");
+
+        if (current_url == dashboard){
+          dashboard.style.background = "black";
+          dashboard.style.color = "white";
+        }else if (current_url == advertise){
+          advertise.style.background = "black";
+          advertise.style.color = "white";
+          advertise_icon.style.color = "white";
+        }else if (current_url == browser){
+          browser.style.background = "black";
+          browser.style.color = "white";
+          browser_icon.style.color = "white";
+        }else if (current_url == pendingaccounts){
+          pendingaccounts.style.background = "black";
+          pendingaccounts.style.color = "white";
+        }else if (current_url == approvedaccounts){
+          approvedaccounts.style.background = "black";
+          approvedaccounts.style.color = "white";
+        }else if (current_url == add_announcements){
+          add_announcements.style.background = "black";
+          add_announcements.style.color = "white";
+        }else if (current_url == display_announcements){
+          display_announcements.style.background = "black";
+          display_announcements.style.color = "white";
+        }else if (current_url == users){
+          users.style.background = "black";
+          users.style.color = "white";
+          users_icon.style.color = "white";
+        }
+
+    }
   </script>
 </body>
 
