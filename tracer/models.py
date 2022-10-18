@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from datetime import date
+import os
 from django.contrib.auth.models import (
     AbstractBaseUser, AbstractUser, BaseUserManager
 )
