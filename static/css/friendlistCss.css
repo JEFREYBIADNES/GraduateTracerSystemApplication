@@ -52,18 +52,47 @@ body{
 }
 .img-profile1.rounded-circle {
     margin-left: -34px;
+    margin-top: 8px;
+}
+.img-profile2.rounded-circle {
+    margin-left: -34px;
     margin-top: -2px;
 }
+
+img.post-image {
+    vertical-align: middle;
+    border-style: none;
+    max-width: 100%;
+}
+
 a#\/graduate\/display-info\/ {
     margin-top: -23px;
 }
 .mt-0.text-dark {
-    margin-top: -23px!important;
+    margin-top: -32px!important;
     opacity: 0.5;
 }
+
+.ml-inherit {
+    margin-left: auto!important;
+    margin-top: -10px;
+}
+
+/* i.fas.fa-ellipsis-v.text-black{
+  padding-left: 36px!important;
+} */
+
+a.nav-link.post{
+  margin-top: -34px!important;
+}
+
 .font1 {
     margin-left: 27px;
     font-size: 11px;
+}
+
+span.mr-2.d-lg-inline-flex.text-gray-700.small.post {
+    margin-right: -0.5rem!important;
 }
 
 .default:hover {
@@ -75,90 +104,25 @@ a#\/graduate\/display-info\/ {
 a.btn.btn-light {
     margin-top: 35px;
 }
+a.fas.fa-ellipsis-v.text-black{
+  margin-left: auto!important;
+  display: inline-block;
+}
 .card-footer.row.w-100.m-auto {
     margin-bottom: -8px!important;
-    height: 53px;
 }
 .fa-thumbs-up:hover {
-    color: #3da8d1;
+    color: #005dff;
 }
 .fa-thumbs-down:hover {
-    color: #e75858;
+    color: #af1100;
+}
+.fa.fa-comment:hover{
+  color: #f77d2c;
 }
 .dropdown {
   display: inline-block;
   position: relative;
 }
 
-.dd-button {
-  display: inline-block;
-  border: 1px solid gray;
-  border-radius: 4px;
-  padding: 10px 30px 10px 20px;
-  background-color: #ffffff;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.dd-button:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 15px;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid black;
-}
-
-.dd-button:hover {
-  background-color: #eeeeee;
-}
-
-
-.dd-input {
-  display: none;
-}
-
-.dd-menu {
-  position: absolute;
-  top: 100%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 0;
-  margin: 2px 0 0 0;
-  box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
-  background-color: #ffffff;
-  list-style-type: none;
-}
-
-.dd-input + .dd-menu {
-  display: none;
-}
-
-.dd-input:checked + .dd-menu {
-  display: block;
-}
-
-.dd-menu li {
-  padding: 10px 20px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.dd-menu li:hover {
-  background-color: #f6f6f6;
-}
-
-.dd-menu li a {
-  display: block;
-  margin: -10px -20px;
-  padding: 10px 20px;
-}
-
-.dd-menu li.divider{
-  padding: 0;
-  border-bottom: 1px solid #cccccc;
-}
+/* 3 dots dropdown css */

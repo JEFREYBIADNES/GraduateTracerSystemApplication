@@ -16,7 +16,7 @@
 
       <!-- Nav Item - Dashboard -->
      <li class="nav-item active">
-         <a class="nav-link" id="{% url 'DashboardAdmin' %}" href="{% url 'DashboardAdmin' %}">
+         <a class="nav-link" id="DashboardAdmin" href="{% url 'DashboardAdmin' %}">
            {% if user.profile_picture %}
              <img class="img-fluid img-profile rounded-circle" src="{{request.user.profile_picture.url}}">
            {% else %}
@@ -47,8 +47,8 @@
           </a>
       </li>
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <!-- <li class="nav-item">
+          <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
               <i class="fas fa-graduation-cap"></i>
               <span>Graduates</span>
           </a>
@@ -56,6 +56,19 @@
               <div class="bg-white py-2 collapse-inner rounded">
                   <a class="collapse-item" id="{% url 'pendingaccounts' %}" href="{% url 'pendingaccounts' %}">Pending</a>
                   <a class="collapse-item" id="{% url 'approvedaccounts' %}" href="{% url 'approvedaccounts' %}">Approved</a>
+              </div>
+          </div>
+      </li> -->
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsethree" aria-expanded="true" aria-controls="collapsethree">
+              <i class="fas fa-graduation-cap"></i>
+              <span>Graduates</span>
+          </a>
+          <div id="collapsethree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" id="{% url 'pendingaccounts' %}" href="{% url 'pendingaccounts' %}">Pending</a>
+                <a class="collapse-item" id="{% url 'approvedaccounts' %}" href="{% url 'approvedaccounts' %}">Approved</a>
               </div>
           </div>
       </li>

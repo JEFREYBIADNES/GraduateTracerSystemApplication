@@ -123,7 +123,7 @@
   <script>
     function side_bar_active(){
       current_url = window.location.href;
-      dashboard = document.getElementById("{% url 'DashboardAdmin' %}");
+      dashboard = document.getElementById("DashboardAdmin");
       advertise = document.getElementById("{% url 'advertise' %}");
       browser = document.getElementById("{% url 'browser' %}");
       pendingaccounts = document.getElementById("{% url 'pendingaccounts' %}");
@@ -144,11 +144,11 @@
           browser.style.color = "white";
           browser_icon.style.color = "white";
         }else if (current_url == pendingaccounts){
-          pendingaccounts.style.background = "black";
-          pendingaccounts.style.color = "white";
+            pendingaccounts.style.background = "black";
+            pendingaccounts.style.color = "white";
         }else if (current_url == approvedaccounts){
-          approvedaccounts.style.background = "black";
-          approvedaccounts.style.color = "white";
+            approvedaccounts.style.background = "black";
+            approvedaccounts.style.color = "white";
         }else if (current_url == add_announcements){
           add_announcements.style.background = "black";
           add_announcements.style.color = "white";

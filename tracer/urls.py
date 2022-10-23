@@ -65,7 +65,6 @@ urlpatterns = [
 
 
     # URLs for posting updates
-
     path('newsfeed', PostListView.as_view(), name='post-list'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('post/edit/<int:pk>/', PostEditView.as_view(), name='post-edit'),

@@ -88,9 +88,7 @@
                       {{user_info.date_graduated}}
                     </td>
                     <td class="text-center">
-                        <div class="pl-2 pr-2 pb-2 pt-1">
-                            <a class="btn btn-success" href="{% url 'user_informations' user_info.id %}"><i class="fas fa-eye"></i></a>
-                        </div>
+                        <a class="dropdown-item text-primary p-0" href="{% url 'user_informations' user_info.id %}"><i class="fas fa-eye"></i></a>
                     </td>
                 </tr>
             {% endif %}

@@ -33,21 +33,19 @@
           Interface
       </div>
 
-      <!-- Nav Item - Charts -->
+      <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-          <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseone" aria-expanded="true" aria-controls="collapseone">
               <i class="fas fa-users"></i>
               <span>Admin Management</span>
           </a>
-          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
+          <div id="collapseone" class="collapse" aria-labelledby="headingone" data-parent="#accordionSidebar">
               <div class="bg-white py-2 collapse-inner rounded">
-                  <a class="collapse-item" href="{% url 'create_user_management' %}">Create Admin</a>
-                  <a class="collapse-item" href="{% url 'display_user_management' %}">Display Admin</a>
+                <a class="collapse-item" href="{% url 'create_user_management' %}">Create Admin</a>
+                <a class="collapse-item" href="{% url 'display_user_management' %}">Display Admin</a>
               </div>
           </div>
       </li>
-
-
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
