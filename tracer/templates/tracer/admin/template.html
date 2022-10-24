@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <head>
 
     <meta charset="utf-8">
@@ -55,7 +55,7 @@
   				<!-- End of Topbar -->
 
           <!-- Begin Page Content -->
-          <div style="margin-top: 100px;"class="container-fluid">
+          <div style="margin-top: 100px;margin-bottom:100px; "class="container-fluid">
             {% block content %}
 
 
@@ -68,9 +68,23 @@
         <!-- End of Main Content -->
       </div>
       <!-- Scroll to Top Button-->
-      <a class="scroll-to-top rounded " href="#page-top">
+      
+        <div class="footer d-sm-block " style="position: fixed; z-index: 1; bottom: 0; width: 100% !important; background-color:#fff; border-shadow:0; ">
+          <div class="footer-copyright text-center py-3 " style="margin-bottom: -26px;margin-top: -6px; whitespace:nowrap;">© 2022 Copyright:
+       <a href="/">CTUgraduatesystem.com</a>
+       <ul>
+        <span >Privacy Policy /  </span> 
+        <span > Security </span>
+      </ul>
+     
+        
+      
+
+        <a class="scroll-to-top rounded " href="#page-top" style="margin-bottom:-12px;">
           <i class="fas fa-angle-up"></i>
-      </a>
+        </a>
+       
+      </footer>
 
   <!-- Chatbot Script -->
   <script src="{% static 'js/chatbot.js' %}"></script>
@@ -163,6 +177,8 @@
 
     }
   </script>
+  
 </body>
+
 
 </html>
