@@ -3,7 +3,7 @@ from .import views
 from .import systemadmin
 from .import sao
 from django.contrib.auth import views as auth_views
-from .views import PostListView, PostDetailView, PostEditView, PostDeleteView, CommentDeleteView, AddLike, AddDislike
+from .views import AddLike, AddDislike
 urlpatterns = [
 
     # All
@@ -65,12 +65,18 @@ urlpatterns = [
 
 
     # URLs for posting updates
-    path('newsfeed', PostListView.as_view(), name='post-list'),
-    path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
-    path('post/edit/<int:pk>/', PostEditView.as_view(), name='post-edit'),
-    path('post/delete/<int:pk>/', PostDeleteView.as_view(), name='post-delete'),
-    path('post/<int:post_pk>/comment/delete/<int:pk>/',
-         CommentDeleteView.as_view(), name='comment-delete'),
+
+    path('newsfeed/post/', views.PostTimeline, name='post-list'),
+    path('newsfeed/edit-post/<int:pk>/', views.EditPostTimeline, name='post-edit'),
+    path('delete_post/<int:pk>/', views.DeletePostTimeline, name="delete_post"),
+    path('post_comment/<int:pk>/', views.CommentPostTimeline, name="post-comment"),
+
+    # path('newsfeed/', PostListView.as_view(), name='post-list'),
+    # path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+    # path('post/edit/<int:pk>/', PostEditView.as_view(), name='post-edit'),
+    # path('post/delete/<int:pk>/', PostDeleteView.as_view(), name='post-delete'),
+    # path('post/<int:post_pk>/comment/delete/<int:pk>/',
+    #      CommentDeleteView.as_view(), name='comment-delete'),
     path('post/<int:pk>/like', AddLike.as_view(), name='like'),
     path('post/<int:pk>/dislike', AddDislike.as_view(), name='dislike'),
 

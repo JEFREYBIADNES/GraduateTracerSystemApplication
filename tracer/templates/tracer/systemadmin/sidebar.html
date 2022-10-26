@@ -34,6 +34,7 @@
       </div>
 
       <!-- Nav Item - Pages Collapse Menu -->
+      {% if request.user.system_admin %}
       <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseone" aria-expanded="true" aria-controls="collapseone">
               <i class="fas fa-users"></i>
@@ -46,21 +47,7 @@
               </div>
           </div>
       </li>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsefour" aria-expanded="true" aria-controls="collapsefour">
-              <i class="fas fa-plus"></i>
-              <span>ADD</span>
-          </a>
-          <div id="collapsefour" class="collapse" aria-labelledby="headingfour" data-parent="#accordionSidebar">
-              <div class="bg-white py-2 collapse-inner rounded">
-                  <a class="collapse-item" href="{% url 'school_report' %}">ADD School</a>
-                  <a class="collapse-item" href="{% url 'school_record' %}">ADD Course</a>
-
-              </div>
-          </div>
-      </li>
+      {% endif %}
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">

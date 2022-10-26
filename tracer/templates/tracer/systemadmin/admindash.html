@@ -6,7 +6,23 @@
 {% block content %}
 
       <div class="row">
-        <div class="col-xl-4 col-md-6 mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-danger shadow-sm h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                User Type</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">ADMIN {{request.user.user_type}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-800"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-info shadow-sm h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -17,22 +33,6 @@
                         </div>
                         <div class="col-auto">
                             <i class="fa fa-school fa-2x text-gray-800"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-danger shadow-sm h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                Users</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count_users}}</div>
-                        </div>
-                        <div class="col-auto">
-                            <i class="fas fa-users fa-2x text-gray-800"></i>
                         </div>
                     </div>
                 </div>
@@ -110,16 +110,10 @@
                       <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
                           src="{% static 'img/visualizer.svg'  %}" alt="Dashboard-Visualizer">
                   </div>
-                  <p>Recommender System aims to lessen unemployment among college graduates with its
-                     easy to navigate features and wide array of available jobs ranging from information
-                     technology to industrial technology related work.</p>
-
-                  <p>Hunting for jobs has never been this easy. No more transportation costs
-                    and walking under the heat of the sun to look for companies looking for
-                    qualified workers like you. Recommender System brings to you opportunities
-                    right in front of you at your own computer screens. You only have to be a college
-                    graduate to avail of these services.
-                  </p>
+                  <p>Is one of the users who creates student administrative officers,
+                     can view all of the users who have registered for this application,
+                      and can also view all of the graduates' basic profiles and work histories,
+                     as well as calculate all of the population on their respective campuses.</p>
               </div>
           </div>
         </div>
@@ -132,13 +126,9 @@
                         <h6 class="m-0 font-weight-bold text-white"><i class="mr-2 fas fa-question-circle"></i>Guide</h6>
                     </div>
                     <div class="card-body">
-                      <p>To help lessen unemployment among college graduates, you can give them job opportunities
-                        by adding available jobs at <a target="_blank" rel="nofollow" href="{% url 'advertise' %}">advertise</a> and
-                        to view all the jobs available you can view it on <a target="_blank" rel="nofollow" href="{% url 'browser' %}">browse</a> jobs.
-                        You can also view the preferred jobs of graduates in <a target="_blank" rel="nofollow" href="#">job requests</a>.</p>
-                        POST and GET /<a target="_blank" rel="nofollow" href="{% url 'advertise' %}"> Advertise </a>and
-                        <a target="_blank" rel="nofollow" href="{% url 'browser' %}"> Browse Jobs &rarr;</a> <br>
-                        Graduates<a target="_blank" rel="nofollow" href="{% url 'job_requests' %}"> Job Requests &rarr;</a>
+                      <p>Creates Student Administrative Officers, DEAN, System Admin, Campus Director and University President.</p>
+                      <p>View Information About Graduates and thier Work Experiences.</p>
+                      <p>Has a total number of employed and unemployed CTU graduates.</p>
                     </div>
                 </div>
             </div>

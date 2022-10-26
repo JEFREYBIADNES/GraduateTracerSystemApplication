@@ -19,7 +19,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 
 from .decorators import unauthenticated_user, allowed_users
-from .forms import RegisterForm, RegisterAdminForm, Profile, GraduateForm, PostForm, CommentForm
+from .forms import RegisterForm, RegisterAdminForm, Profile, GraduateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 

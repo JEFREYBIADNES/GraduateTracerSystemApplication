@@ -27,6 +27,14 @@
       z-index: 1;
     }
 
+    .input-group {
+      position: sticky;
+    }
+
+    button.btn.bg-c-lite-green.text-white {
+      position: relative;
+      z-index: auto;
+    }
     .dataTables_length{
       padding-bottom: 10px;
     }
@@ -91,8 +99,8 @@
               <div class="input-group">
                   {% render_field ads.job_category class="form-control" name="ads_job_category" %}
                   <div class="input-group-append">
+                    <button class="btn bg-c-lite-green text-white" type="button"  data-toggle="modal" data-target="#exampleModalCenter" name="button" style="margin-left: 8px;"><i class="fas fa-plus"></i></button>
                   </div>
-                  <button class="btn bg-c-lite-green text-white" type="button"  data-toggle="modal" data-target="#exampleModalCenter" name="button" style="margin-left: 8px;"><i class="fas fa-plus"></i></button>
               </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6 mb-3">

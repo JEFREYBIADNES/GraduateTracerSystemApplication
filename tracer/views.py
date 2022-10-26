@@ -18,7 +18,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 
 from .decorators import unauthenticated_user, allowed_users
-from .forms import RegisterForm, RegisterAdminForm, Profile, GraduateForm, PostForm, CommentForm
+from .forms import RegisterForm, RegisterAdminForm, Profile, GraduateForm,PostFeedForm, CommentForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -77,7 +77,13 @@ def loginPage(request):
                 return redirect('DashboardUser')
             elif request.user.is_admin_sao:
                 return redirect('DashboardAdmin')
+            elif request.user.is_dean:
+                return redirect('admindash')
+            elif request.user.is_campus_director:
+                return redirect('admindash')
             elif request.user.is_system_admin:
+                return redirect('admindash')
+            elif request.user.is_university_pres:
                 return redirect('admindash')
             else:
                 return HttpResponse('You are not authorized to view this page')
@@ -698,170 +704,198 @@ def AboutView(request):
                }
     return render(request, 'tracer/user/about.html', context)
 
+def PostTimeline(request):
+    form = PostFeedForm()
+    login_in_user = request.user
 
-class PostListView(LoginRequiredMixin, View):
-
-    def get(self, request, *args, **kwargs):
-        login_in_user = request.user
-        posts = Post.objects.all().order_by('-created_on')
-        form = PostForm()
-        grad_infos = User.objects.all().order_by('-id')
-        user = request.user
-        jobs = Advertise.objects.all().order_by('-date_created')
-        job_categories = JobCategory.objects.all().order_by('-id')
-        announcements = Announcement.objects.all().order_by('-date_created')
-
-        top_notif_announcements = Announcement.objects.all().order_by(
-            '-date_created').filter(announcement_notif_counter=False)[:3]
-        top_notif_jobs = Advertise.objects.all().order_by(
-            '-date_created').filter(job_advertise_notif_counter=False)[:3]
-
-        user = request.user
-        user_chat_bot_notifications_count = chat_bot_notifications_counter(
-            user)
-        user_top_nav_notifications_counter = top_nav_notifications_counter(
-            user)
-
-        user_announcement_notifications_counter = announcement_notifications_counter(
-            user)
-        user_job_advertise_notifications_counter = job_advertise_notifications_counter(
-            user)
-        user_job_request_notifications_counter = job_request_notifications_counter(
-            user)
-        user_job_category_notif_counter = job_category_notifications_counter(
-            user)
-
-        context = {
-            'post_list': posts,
-            'form': form,
-            'grad_infos': grad_infos,
-            'announcements': announcements,
-           'jobs': jobs,
-           'job_categories': job_categories,
-           'top_notif_announcements': top_notif_announcements,
-           'top_notif_jobs': top_notif_jobs,
-           'user_chat_bot_notifications_count': user_chat_bot_notifications_count,
-           'user_top_nav_notifications_counter': user_top_nav_notifications_counter,
-           'user_announcement_notifications_counter': user_announcement_notifications_counter,
-           'user_job_advertise_notifications_counter': user_job_advertise_notifications_counter,
-           'user_job_request_notifications_counter': user_job_request_notifications_counter,
-           'user_job_category_notif_counter': user_job_category_notif_counter,
-        }
-
-        return render(request, 'tracer/user/post_list.html', context)
-
-    def post(self, request, *args, **kwargs):
-        posts = Post.objects.all().order_by('-id')
-        form = PostForm(request.POST, request.FILES)
-
+    if request.method == 'POST':
+        image = request.FILES.get('image')
+        form = PostFeedForm(request.POST, request.FILES)
         if form.is_valid():
-            new_post = form.save(commit=False)
-            new_post.author = request.user
-            new_post.save()
+            form = form.save(commit=False)
+            form.author = request.user
+            form.save()
+            messages.success(
+                request, 'Your Post was Successfully Uploaded!')
+            return redirect('post-list')
 
-        jobs = Advertise.objects.all().order_by('-date_created')
-        job_categories = JobCategory.objects.all().order_by('-id')
-        announcements = Announcement.objects.all().order_by('-date_created')
-
-        top_notif_announcements = Announcement.objects.all().order_by(
-            '-date_created').filter(announcement_notif_counter=False)[:3]
-        top_notif_jobs = Advertise.objects.all().order_by(
-            '-date_created').filter(job_advertise_notif_counter=False)[:3]
-
-        user = request.user
-        user_chat_bot_notifications_count = chat_bot_notifications_counter(
-            user)
-        user_top_nav_notifications_counter = top_nav_notifications_counter(
-            user)
-
-        user_announcement_notifications_counter = announcement_notifications_counter(
-            user)
-        user_job_advertise_notifications_counter = job_advertise_notifications_counter(
-            user)
-        user_job_request_notifications_counter = job_request_notifications_counter(
-            user)
-        user_job_category_notif_counter = job_category_notifications_counter(
-            user)
-
-
-
-        context = {'announcements': announcements,
-                   'jobs': jobs,
-                   'job_categories': job_categories,
-                   'top_notif_announcements': top_notif_announcements,
-                   'top_notif_jobs': top_notif_jobs,
-                   'user_chat_bot_notifications_count': user_chat_bot_notifications_count,
-                   'user_top_nav_notifications_counter': user_top_nav_notifications_counter,
-                   'user_announcement_notifications_counter': user_announcement_notifications_counter,
-                   'user_job_advertise_notifications_counter': user_job_advertise_notifications_counter,
-                   'user_job_request_notifications_counter': user_job_request_notifications_counter,
-                   'user_job_category_notif_counter': user_job_category_notif_counter,
-                   'post_list': posts,
-                   'form': form,
-                   }
-
-        return render(request, 'tracer/user/post_list.html', context)
-
-
-class PostDetailView(LoginRequiredMixin, View):
-    def get(self, request, pk, *args, **kwargs):
-        post = Post.objects.get(pk=pk)
-        form = CommentForm()
-
-        comments = Comment.objects.filter(post=post).order_by('-id')
-
-        context = {
-            'post': post,
-            'form': form,
-            'comments': comments,
-        }
-
-        return render(request, 'tracer/user/post_detail.html', context)
-
-    def post(self, request, pk, *args, **kwargs):
-        post = Post.objects.get(pk=pk)
+    form = CommentForm()
+    if request.method == 'POST':
         form = CommentForm(request.POST)
-
         if form.is_valid():
-            new_comment = form.save(commit=False)
-            new_comment.author = request.user
-            new_comment.post = post
-            new_comment.save()
+            form = form.save(commit=False)
+            form.author = request.user
+            form.save()
+            messages.success(
+                request, 'The Post was Successfully Commented!')
+            return redirect('post-list')
 
-        comments = Comment.objects.filter(post=post).order_by('-id')
+    post = Post.objects.all().order_by('-created_on')
 
-        context = {
-            'post': post,
-            'form': form,
-            'comments': comments,
-        }
+    grad_infos = User.objects.all().order_by('-id')
 
-        return render(request, 'tracer/user/post_detail.html', context)
+    jobs = Advertise.objects.all().order_by('-date_created')
+    job_categories = JobCategory.objects.all().order_by('-id')
+    announcements = Announcement.objects.all().order_by('-date_created')
 
+    top_notif_announcements = Announcement.objects.all().order_by(
+        '-date_created').filter(announcement_notif_counter=False)[:3]
+    top_notif_jobs = Advertise.objects.all().order_by(
+        '-date_created').filter(job_advertise_notif_counter=False)[:3]
 
-class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Post
-    fields = ['body']
-    template_name = 'tracer/user//post_edit.html'
+    user = request.user
+    user_chat_bot_notifications_count = chat_bot_notifications_counter(
+        user)
+    user_top_nav_notifications_counter = top_nav_notifications_counter(
+        user)
 
-    def get_success_url(self):
-        pk = self.kwargs['pk']
-        return reverse_lazy('post-detail', kwargs={'pk': pk})
+    user_announcement_notifications_counter = announcement_notifications_counter(
+        user)
+    user_job_advertise_notifications_counter = job_advertise_notifications_counter(
+        user)
+    user_job_request_notifications_counter = job_request_notifications_counter(
+        user)
+    user_job_category_notif_counter = job_category_notifications_counter(
+        user)
 
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
+    context = {'grad_infos': grad_infos,
+                'announcements': announcements,
+               'jobs': jobs,
+               'job_categories': job_categories,
+               'top_notif_announcements': top_notif_announcements,
+               'top_notif_jobs': top_notif_jobs,
+               'user_chat_bot_notifications_count': user_chat_bot_notifications_count,
+               'user_top_nav_notifications_counter': user_top_nav_notifications_counter,
+               'user_announcement_notifications_counter': user_announcement_notifications_counter,
+               'user_job_advertise_notifications_counter': user_job_advertise_notifications_counter,
+               'user_job_request_notifications_counter': user_job_request_notifications_counter,
+               'user_job_category_notif_counter': user_job_category_notif_counter,
+               'post_list': post,'form': form, 'forms': forms,}
 
+    return render(request, 'tracer/user/post_list.html', context)
 
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Post
-    template_name = 'tracer/user//post_delete.html'
-    success_url = reverse_lazy('post-list')
+def EditPostTimeline(request, pk):
+    post = Post.objects.get(id=pk)
+    form = PostFeedForm(instance=post)
+    login_in_user = request.user
 
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
+    if request.method == 'POST':
+        image = request.FILES.get('image')
+        form = PostFeedForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.author = request.user
+            form.save()
+            messages.success(
+                request, 'Your Post was Successfully Updated!')
+            return redirect('post-list')
+    else:
+        p = PostFeedForm
 
+    post = Post.objects.all().order_by('-created_on')
+
+    grad_infos = User.objects.all().order_by('-id')
+
+    jobs = Advertise.objects.all().order_by('-date_created')
+    job_categories = JobCategory.objects.all().order_by('-id')
+    announcements = Announcement.objects.all().order_by('-date_created')
+
+    top_notif_announcements = Announcement.objects.all().order_by(
+        '-date_created').filter(announcement_notif_counter=False)[:3]
+    top_notif_jobs = Advertise.objects.all().order_by(
+        '-date_created').filter(job_advertise_notif_counter=False)[:3]
+
+    user = request.user
+    user_chat_bot_notifications_count = chat_bot_notifications_counter(
+        user)
+    user_top_nav_notifications_counter = top_nav_notifications_counter(
+        user)
+
+    user_announcement_notifications_counter = announcement_notifications_counter(
+        user)
+    user_job_advertise_notifications_counter = job_advertise_notifications_counter(
+        user)
+    user_job_request_notifications_counter = job_request_notifications_counter(
+        user)
+    user_job_category_notif_counter = job_category_notifications_counter(
+        user)
+
+    context = {'grad_infos': grad_infos,
+                'announcements': announcements,
+               'jobs': jobs,
+               'job_categories': job_categories,
+               'top_notif_announcements': top_notif_announcements,
+               'top_notif_jobs': top_notif_jobs,
+               'user_chat_bot_notifications_count': user_chat_bot_notifications_count,
+               'user_top_nav_notifications_counter': user_top_nav_notifications_counter,
+               'user_announcement_notifications_counter': user_announcement_notifications_counter,
+               'user_job_advertise_notifications_counter': user_job_advertise_notifications_counter,
+               'user_job_request_notifications_counter': user_job_request_notifications_counter,
+               'user_job_category_notif_counter': user_job_category_notif_counter,
+               'post_list': post,'form': form, 'forms': forms,}
+
+    return render(request, 'tracer/user/post_edit.html', context)
+
+def DeletePostTimeline(request, pk):
+    delete_post = Post.objects.get(id=pk)
+    delete_post.delete()
+    messages.success(request, 'Successfully Deleted')
+    return redirect('post-list')
+
+def CommentPostTimeline(request, pk):
+    posts=Post.objects.get(id=pk)
+    form = CommentForm(post = request.user)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.post = request.user
+            form.save()
+            messages.success(
+                request, 'The Post was Successfully Commented!')
+            return redirect('post-list')
+
+    grad_infos = User.objects.all().order_by('-id')
+
+    jobs = Advertise.objects.all().order_by('-date_created')
+    job_categories = JobCategory.objects.all().order_by('-id')
+    announcements = Announcement.objects.all().order_by('-date_created')
+
+    top_notif_announcements = Announcement.objects.all().order_by(
+        '-date_created').filter(announcement_notif_counter=False)[:3]
+    top_notif_jobs = Advertise.objects.all().order_by(
+        '-date_created').filter(job_advertise_notif_counter=False)[:3]
+
+    user = request.user
+    user_chat_bot_notifications_count = chat_bot_notifications_counter(
+        user)
+    user_top_nav_notifications_counter = top_nav_notifications_counter(
+        user)
+
+    user_announcement_notifications_counter = announcement_notifications_counter(
+        user)
+    user_job_advertise_notifications_counter = job_advertise_notifications_counter(
+        user)
+    user_job_request_notifications_counter = job_request_notifications_counter(
+        user)
+    user_job_category_notif_counter = job_category_notifications_counter(
+        user)
+
+    context = {'grad_infos': grad_infos,
+                'announcements': announcements,
+               'jobs': jobs,
+               'job_categories': job_categories,
+               'top_notif_announcements': top_notif_announcements,
+               'top_notif_jobs': top_notif_jobs,
+               'user_chat_bot_notifications_count': user_chat_bot_notifications_count,
+               'user_top_nav_notifications_counter': user_top_nav_notifications_counter,
+               'user_announcement_notifications_counter': user_announcement_notifications_counter,
+               'user_job_advertise_notifications_counter': user_job_advertise_notifications_counter,
+               'user_job_request_notifications_counter': user_job_request_notifications_counter,
+               'user_job_category_notif_counter': user_job_category_notif_counter,
+               'post': posts,'form': form, 'forms': forms,}
+
+    return render(request, 'tracer/user/post_comment.html', context)
 
 class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Comment

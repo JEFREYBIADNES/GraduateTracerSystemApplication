@@ -1,6 +1,7 @@
 {% extends 'tracer/user/template.html' %}
 {% block title %}Newsfeed{% endblock %}
 {% load crispy_forms_tags %}
+{% load widget_tweaks %}
 {% load static %}
 {% block content %}
 
@@ -24,26 +25,36 @@
             <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <div class="row justify-content-center ">
-                            <div class=" col-md-10 col-md-5 col-sm-12 ">
-                                <h5><strong>CREATE POST</strong></h5>
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle">CREATE POST</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                        <div class="card w-100 m-auto">
+                            <div class="card-body">
+                                <form method="POST" enctype="multipart/form-data">
+                                  {% csrf_token %}
+                                  <div class="mb-4">
+                                    {% render_field form.body class="form-control" cols="40" rows="4" placeholder="What is in your mind?" name="title" %}
+                                  </div>
+                                    <div class="">
+                                      <h6 class="text-dark">Image</h6>
+                                      {% render_field form.image name="image" %}
+                                    </div>
+                                    <div class="row justify-content-center">
+                                      <div class="col-lg-6">
+                                        <button type="submit" class="btn bg-c-tile text-white btn-block">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                            <span class="text">POST</span>
+                                        </button>
+                                      </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div>
-                            <div class="card w-100 m-auto">
-                                <div class="card-body">
-                                    <form method="POST" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                        {{ form | crispy }}
-                                        <div class="d-grid gap-2">
-                                            <button class="btn bg-c-tile btn-sm btn-block">POST</button><br>
-                                            <button type="button" class="btn btn-light btn-md "  data-toggle="modal" data-target=".bd-example-modal-lg" style="float:right;"> <strong>Cancel </strong></button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
               </div>
@@ -67,6 +78,7 @@
                             </div>
                           </div>
                         </div>
+                        {% if post.author.id == request.user.id %}
                         <div class="ml-inherit">
                           <div class="dropdown no-arrow">
                             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuButton"
@@ -75,11 +87,25 @@
                             </a>
                               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                   aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item text-info" href="{% url 'post-edit' post.pk %}"><i class="mr-2 fas fa-edit"></i>Edit</a>
-                                <a class="dropdown-item text-danger" href="{% url 'post-delete' post.pk %}"><i class="mr-2 fas fa-trash-alt"></i>Delete</a>
+                                  <a class="dropdown-item text-info" href="{% url 'post-edit' post.id %}"><i class="mr-2 fas fa-edit"></i>Edit</a>
+                                  <a class="dropdown-item text-danger" data-toggle="modal" data-target="#exampleModalCenter{{ post.id }}"><i class="mr-2 fas fa-trash-alt"></i>Delete</a>
                               </div>
                           </div>
+                          <div class="modal fade" id="exampleModalCenter{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                              <div class="modal-content">
+                                <div class="modal-body text-black">
+                                  <h3><span>Are you sure you want to DELETE this POST ?</span></h3>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                  <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Confirm Delete</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                        {% endif %}
                       </div>
                     </div>
                     <div class="card-body" style=" background-color: #fff !important;color: black;">
@@ -89,7 +115,6 @@
                             <img src="{{ post.image.url }}" class="img-fluid" style="max-width: 100%; height: auto;" alt="Responsive image"/>
                         {% endif %}
 
-                        <a href="{% url 'post-detail' post.pk %}" class="stretched-link"></a>
                         </div>
                     </div>
                     <div class="card-footer row w-100 m-auto">
@@ -122,59 +147,30 @@
                             </form>
                           </div>
                           <div class="col-lg-4 col-md-4 col-sm-0 text-center">
-                            <!-- <button class="btn"> -->
-                              <!-- <a class="tatacom" style="text-decoration: none;" href="{% url 'post-detail' post.pk %}"></a> -->
-                              <button type="button" class="btn default" data-toggle="modal" data-target="#exampleModalCenter">
-                                <i style="font-size: 19px;" aria-hidden="true" class="fa fa-comment">
-                                </i>
-                                Comment
-                              </button>
-                              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLongTitle">Comment here</h5>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                    </div>
-                                    <div class="modal-body">
-                                      <div class="justify-content-center">
-                                      <div>
-                                        <form method="POST">
-                                  				{% csrf_token %}
-                                  				{{ form | crispy }}
-                                  			</form>
-                                      </div>
-                                      <!-- {% for comment in comments %}
-                                    	<div class="row justify-content-center mt-3 mb-5">
-                                    		<div class="col-md-5 col-sm-12 border-bottom">
-                                    			<p>
-                                    				<strong>{{ comment.post.author.firstname }} {{ comment.post.author.lastname }}</strong> {{ comment.created_on }}
-                                    				{% if request.user == comment.author %}
-                                    					<a href="{% url 'comment-delete' post.pk comment.pk %}" style="color: #333;"><i class="fas fa-trash"></i>
-                                    					</a>
-                                    				{% endif %}
-                                    			</p>
-                                    	        <p>{{ comment.comment }}</p>
-                                    		</div>
-                                    	</div>
-                                    	{% endfor %} -->
-                                      </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <div class="d-grid gap-2">
-                                        <button class="btn bg-c-tile mt-3">Submit!</button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <!-- <button class="btn default"> -->
-                              <!-- <a href="{% url 'post-detail' post.pk %}">
-                              <i style="margin-top: 2px; font-size: 19px; color: #262323;" class="fa fa-comment"></i> -->
+                            <a href="{% url 'post-comment' post.id %}" class="btn btn default">
+                              <i style="font-size: 19px;" aria-hidden="true" class="fa fa-comment">
+                              </i>
+                              Comment
+						                </a>
                           </div>
                         </div>
+                          <div class="card-header bg-trasparent border-none" style="background-color: #fff;">
+                            <form method="POST" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="d-flex flex-row align-items-start">
+                                {% if user.profile_picture %}
+                                  <img class="rounded-circle" src="{{request.user.profile_picture.url}}" width="40" height="40">
+                                {% else %}
+                                  <img class="rounded-circle" src="{% static 'img/default_profile_2.png'%}" width="40" height="40">
+                                {% endif %}
+                                    {% render_field form.comment class="form-control" cols="200" rows="1" placeholder="Write your comment here..." name="title" %}
+                              </div>
+                              <div class="mt-2 text-right">
+                                <button class="btn btn-primary btn-sm shadow-none" type="submit">Post comment</button>
+                                <button class="btn btn-outline-secondary btn-sm ml-1 shadow-none hide-btn"type="button">Cancel</button>
+                              </div>
+                            </form>
+                          </div>
                       </div>
                     </div>
                     {% endfor %}
@@ -274,4 +270,21 @@
           	</div>
           {% endfor %}
         </div>
+
+
+        <!-- Sweet Alert -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+          {% for message in messages %}
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '{{message}}',
+            showConfirmButton: false,
+            timer: 3000
+          })
+          {% endfor %}
+        </script>
+
 {% endblock content %}

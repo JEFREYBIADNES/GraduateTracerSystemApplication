@@ -19,7 +19,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 
 from .decorators import unauthenticated_user, allowed_users
-from .forms import RegisterForm, RegisterAdminForm, Profile, GraduateForm, PostForm, CommentForm
+from .forms import RegisterForm, RegisterAdminForm, Profile, GraduateForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -33,8 +33,8 @@ from django.core.mail import EmailMessage
 
 
 # ADMIN
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['is_system_admin'])
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['is_system_admin'])
 def admindash(request):
     count_users = User.objects.filter(graduate=True).count()
     count_employed = User.objects.filter(employed=True).count()
@@ -52,8 +52,8 @@ def admindash(request):
                 }
     return render(request, 'tracer/systemadmin/admindash.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['is_system_admin'])
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['is_system_admin'])
 def create_user_management(request):
     adform = RegisterAdminForm()
     if request.method == 'POST':
@@ -70,8 +70,8 @@ def create_user_management(request):
     context = {'adform': adform}
     return render(request, 'tracer/systemadmin/create_user_management.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['is_system_admin'])
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['is_system_admin'])
 def display_user_management(request):
     ad_info = User.objects.all
     context = {
@@ -79,8 +79,8 @@ def display_user_management(request):
                }
     return render(request, 'tracer/systemadmin/display_user_management.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['is_system_admin'])
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['is_system_admin'])
 def user_graduates(request):
     user_info = User.objects.all().order_by('-id')
     query_IDNum = []
@@ -115,8 +115,8 @@ def user_graduates(request):
                 }
     return render(request, 'tracer/systemadmin/user_graduates.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['is_system_admin'])
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['is_system_admin'])
 def usergrad_informations(request, pk):
     user_info = User.objects.get(id=pk)
     JobExperience = WorkExperiences.objects.filter(graduateUser=pk)
@@ -127,8 +127,8 @@ def usergrad_informations(request, pk):
                }
     return render(request, 'tracer/systemadmin/usergrad_info.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['is_system_admin'])
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['is_system_admin'])
 def adprof(request, pk):
     user = User.objects.get(id=pk)
     user_info = ProfileForm(instance=user)
@@ -156,8 +156,8 @@ def adprof(request, pk):
     return render(request, 'tracer/systemadmin/adprof.html', context)
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['is_system_admin'])
+# @login_required(login_url='login')
+# @allowed_users(allowed_roles=['is_system_admin'])
 def school_report(request):
     table = []
     class sr:

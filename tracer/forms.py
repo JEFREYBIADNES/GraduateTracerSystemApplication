@@ -370,30 +370,15 @@ class GraduateForm(forms.ModelForm):
         # field does not have access to the initial value
         return self.initial["password"]
 
-
-class PostForm(forms.ModelForm):
-    body = forms.CharField(
-        label='',
-        widget=forms.Textarea(attrs={
-            'rows': '3',
-            'placeholder': 'Say Something...'
-            }))
-
-    image = forms.ImageField(required=False)
-
+class PostFeedForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['body', 'image']
+        fields = ('body','image',)
+
+        image = forms.ImageField(required=False)
 
 
 class CommentForm(forms.ModelForm):
-    comment = forms.CharField(
-        label='',
-        widget=forms.Textarea(attrs={
-            'rows': '3',
-            'placeholder': 'Comment here...'
-            }))
-
     class Meta:
         model = Comment
         fields = ['comment']
@@ -405,6 +390,8 @@ class AnnouncementForm(forms.ModelForm):
     class Meta:
         model = Announcement
         fields = ('image', 'title', 'description')
+
+        image = forms.ImageField(required=False)
 
 
 class AdvertiseForm(forms.ModelForm):
@@ -423,6 +410,8 @@ class AdvertiseForm(forms.ModelForm):
                   'description',
                   'image',
                   'job_sent')
+
+        image = forms.ImageField(required=False)
 
 
 class JobRequestForm(forms.ModelForm):
