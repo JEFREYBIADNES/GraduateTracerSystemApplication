@@ -18,14 +18,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="ml-auto">
-              <div class="dropdown no-arrow">
-                  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-white"></i>
-                  </a>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
@@ -33,12 +25,8 @@
         {% if announcement.image %}
         <div class="row m-auto">
           <div class="col-lg-6">
-            <!-- <h4 class="card-title">{{announcement.title}}{% if announcement.job_category %} - {{announcement.job_category}}{% endif %}</h4> -->
             <h6 class="card-title pb-1">{{announcement.date_created}}</h6>
             <p class="card-text">{{announcement.description}}</p>
-            <br>
-
-
           </div>
           <div class="col-lg-6 m-auto">
               <img class="img-fluid img-custom-border p-4" src="{{announcement.image.url}}" alt="advertisement image">

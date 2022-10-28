@@ -714,23 +714,13 @@ def PostTimeline(request):
         if form.is_valid():
             form = form.save(commit=False)
             form.author = request.user
+            form.post = post
             form.save()
             messages.success(
                 request, 'Your Post was Successfully Uploaded!')
             return redirect('post-list')
 
-    form = CommentForm()
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.author = request.user
-            form.save()
-            messages.success(
-                request, 'The Post was Successfully Commented!')
-            return redirect('post-list')
-
-    post = Post.objects.all().order_by('-created_on')
+    posts = Post.objects.all().order_by('-created_on')
 
     grad_infos = User.objects.all().order_by('-id')
 
@@ -770,7 +760,7 @@ def PostTimeline(request):
                'user_job_advertise_notifications_counter': user_job_advertise_notifications_counter,
                'user_job_request_notifications_counter': user_job_request_notifications_counter,
                'user_job_category_notif_counter': user_job_category_notif_counter,
-               'post_list': post,'form': form, 'forms': forms,}
+               'post_list': posts,'form': form, 'forms': forms,}
 
     return render(request, 'tracer/user/post_list.html', context)
 
@@ -788,7 +778,7 @@ def EditPostTimeline(request, pk):
             form.save()
             messages.success(
                 request, 'Your Post was Successfully Updated!')
-            return redirect('post-list')
+            return redirect('post-edit', post.id)
     else:
         p = PostFeedForm
 
@@ -842,18 +832,23 @@ def DeletePostTimeline(request, pk):
     messages.success(request, 'Successfully Deleted')
     return redirect('post-list')
 
-def CommentPostTimeline(request, pk):
-    posts=Post.objects.get(id=pk)
-    form = CommentForm(post = request.user)
+def CommentPostTimeline(request, id):
+    post=Post.objects.get(id=id)
+    form = CommentForm()
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
             form = form.save(commit=False)
-            form.post = request.user
+            form.author = request.user
+            form.post = post
             form.save()
             messages.success(
                 request, 'The Post was Successfully Commented!')
-            return redirect('post-list')
+            return redirect('post-comment', post.id)
+
+    comments = Comment.objects.filter(post=post).order_by('-id')
+
+    comment_count = Comment.objects.filter(post=post).count()
 
     grad_infos = User.objects.all().order_by('-id')
 
@@ -893,21 +888,9 @@ def CommentPostTimeline(request, pk):
                'user_job_advertise_notifications_counter': user_job_advertise_notifications_counter,
                'user_job_request_notifications_counter': user_job_request_notifications_counter,
                'user_job_category_notif_counter': user_job_category_notif_counter,
-               'post': posts,'form': form, 'forms': forms,}
+               'post': post,'form': form, 'comments':comments, 'comment_count': comment_count,}
 
     return render(request, 'tracer/user/post_comment.html', context)
-
-class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Comment
-    template_name = 'tracer/user//comment_delete.html'
-
-    def get_success_url(self):
-        pk = self.kwargs['post_pk']
-        return reverse_lazy('post-detail', kwargs={'pk': pk})
-
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
 
 
 class AddLike(LoginRequiredMixin, View):
@@ -971,8 +954,8 @@ class AddDislike(LoginRequiredMixin, View):
         next = request.POST.get('next', '/')
         return HttpResponseRedirect(next)
 
-#Count all Notification
 
+#Count all Notification
 def announcement_notifications_counter(user):
     announcement_notif_counter = Announcement.objects.filter(
         announcement_notif_counter=False).count()
