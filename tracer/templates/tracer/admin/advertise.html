@@ -175,13 +175,35 @@
           <tbody class="text-center">
             {% for job_category in job_categories %}
             <tr>
-              <td class="th-w-20" style="white-space: nowrap">{{job_category.title}}</td>
-              <td class="th-w-20" style="white-space: nowrap">{{job_category.description}}</td>
-              <td class="text-center"><a href="{% url 'update_job_category' job_category.id %}" class="btn btn-info " type="submit" name="button"><i class="fas fa-wrench"></i></a></td>
-              <form method="post" action="{% url 'delete_job_category' job_category.id %}" >
-                {% csrf_token %}
-                <td class="text-center"><button class="btn btn-danger " type="submit" name="button"><i class="fas fa-trash-alt"></i></button></td>
-              </form>
+              <td class="th-w-20" style="white-space: nowrap">
+                {{job_category.title}}
+              </td>
+              <td class="th-w-20" style="white-space: nowrap">
+                {{job_category.description}}
+              </td>
+              <td class="text-center">
+                <a href="{% url 'update_job_category' job_category.id %}" class="btn btn-info " type="submit" name="button">
+                  <i class="fas fa-wrench"></i>
+                </a>
+              </td>
+              <td class="text-center">
+                <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter{{ job_category.id }}">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </td>
+              <div class="modal fade" id="exampleModalCenter{{ job_category.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-body text-black">
+                      <h3><span>Are you sure you want to DELETE this Job Category ?</span></h3>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                      <a href="{% url 'delete_job_category' job_category.id %}" class="btn btn-danger">Confirm Delete</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </tr>
             {% endfor %}
           </tbody>

@@ -1465,11 +1465,9 @@ def update_job_category(request, pk):
 
 def delete_job_category(request, pk):
     delete_job_category = JobCategory.objects.get(id=pk)
-
-    if request.method == 'POST':
-        delete_job_category = JobCategory.objects.get(id=pk)
-        delete_job_category.delete()
-        return redirect('advertise')
+    delete_job_category.delete()
+    messages.success(request, 'Successfully Deleted')
+    return redirect('advertise')
 
 
 def display_category_types(request):
@@ -1503,6 +1501,7 @@ def delete_category_type(request, pk):
     if request.method == 'POST':
         delete_category_type = CategoryType.objects.get(id=pk)
         delete_category_type.delete()
+        messages.success(request, 'Successfully Deleted')
         return redirect('display_category_types')
 
 # Graduate Tracer - User
