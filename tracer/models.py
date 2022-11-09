@@ -336,6 +336,8 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)  # superuser
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    job_sent_list = models.CharField(max_length=5000, null=True)
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -508,6 +510,8 @@ class SystemUser(AbstractUser):
     staff = models. BooleanField(default=False)  # staff user non superuser
     admin = models.BooleanField(default=False)  # superuser
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    job_sent_list = models.CharField(max_length=5000, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

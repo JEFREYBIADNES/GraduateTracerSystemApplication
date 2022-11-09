@@ -108,7 +108,7 @@
           <option value="">Salary</option>
         {% for query in query_salary %}
           {% if query %}
-          <option value="{{query}}">{{query|intcomma}}</option>
+          <option value="{{query}}">₱{{query|intcomma}}</option>
           {% endif %}
         {% endfor %}
         </select>
@@ -147,7 +147,7 @@
               </td>
               <td class="th-w-20" style="white-space: nowrap">
                 {% if ad.salary %}
-                  {{ad.salary}}
+                  ₱{{ad.salary|intcomma}}
                 {% endif %}
               </td>
               <td option-table-wid>
