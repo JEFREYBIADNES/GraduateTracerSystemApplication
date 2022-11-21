@@ -714,7 +714,6 @@ def PostTimeline(request):
         if form.is_valid():
             form = form.save(commit=False)
             form.author = request.user
-            form.post = post
             form.save()
             messages.success(
                 request, 'Your Post was Successfully Uploaded!')
