@@ -79,7 +79,7 @@
         <div class="card-header bg-trasparent border-none" style="background-color: #fff;">
           <div class="row">
             <div class="col-11">
-              <div class="mr-inherit">
+              <div style="white-space: nowrap" class="mr-inherit">
                 <a class="nav-link post">
                     <img class="img-profile1 rounded-circle" src="{{post.author.profile_picture.url}}" width=" 40" height="40" alt="User-Profile-Image">
                     <span class="mr-2 d-lg-inline text-gray-700 small"><strong>{{post.author.first_name}} {{post.author.middle_name}} {{post.author.last_name}}</strong></span>
@@ -191,7 +191,7 @@
                       {% for grad_info in grad_infos %}
                         {% if grad_info.approved %}
                           {% if grad_info.email != request.user.email %}
-                            <div class="nav-item active">
+                            <div style="white-space: nowrap" class="nav-item active">
                                 <a class="nav-link">
                                   <img class="img-profile rounded-circle shadow-sm" data-toggle="modal" data-target="#bd-example-modal-lg1{{grad_info.id}}" src="{{grad_info.profile_picture.url}} " width=" 50" height="50" alt="User-Profile-Image">
                                     <span class="mr-2 d-lg-inline text-gray-700 small" data-toggle="modal" data-target="#bd-example-modal-lg1{{grad_info.id}}"><strong>{{grad_info.email}}</strong></span>
